@@ -47,6 +47,8 @@ while True:
             print("Missing element: ADD")
             print("usage: a <item>")
         elif(userinput[0] == "QUIT"):
+            send_data(s, userinput)
+            print(recvd_msg(s))
             break
         else:
             print("Invalid command: ", userinput[0])
