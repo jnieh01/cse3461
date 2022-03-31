@@ -1,4 +1,4 @@
-# first of all import the socket library
+# Import socket module
 import socket			
 import pickle
 
@@ -7,9 +7,12 @@ def send_msg(s, msg):
     s.send(data)
 
 
-# next create a socket object
-s = socket.socket()		
-print ("Socket successfully created")
+# Create a socket object
+try:
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    print("Socket successfully created")
+except socket.error as err:
+    print("socket creation failed with error %s" %(err))
 
 # reserve a port on your computer in our
 # case it is 12345 but it can be anything
@@ -54,17 +57,16 @@ while True:
             list.remove(data[1])
             msg = "Item {} is removed".format(data[1])
         else:
-            msg = "Item {} doesnt exist".format(data[1])
+            msg = "Item {} does not exist".format(data[1])
     elif(data[0] == "ADD"):
         list.append(data[1])
         msg = "Item {} is added to the list".format(data[1])
     elif(data[0] == "QUIT"):
-        msg = "Exit the program"
+        msg = "Program terminated"
         send_msg(c, msg)
         c.close     # Close the connection with the client
         break       # Breaking once connection closed
 
     send_msg(c, msg)    
     
-    print ("data: ", data)
-    print("list", list)
+    print("list: ", list)
