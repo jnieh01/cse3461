@@ -27,16 +27,16 @@ print ("socket binded to %s" %(port))
 s.listen(5)	
 print ("socket is listening")		
 
+# Establish connection with client.
+c, addr = s.accept()	
+print ('Got connection from', addr )
+
+list = []
+
 # a forever loop until we interrupt it or
 # an error occurs
 while True:
-
-    list = []
     msg = ""
-
-    # Establish connection with client.
-    c, addr = s.accept()	
-    print ('Got connection from', addr )
 
     recvd_data = c.recv(4096)
     data = pickle.loads(recvd_data)
