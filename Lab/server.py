@@ -1,6 +1,11 @@
-# Import socket module
+# Import module
 import socket			
 import pickle
+import logging
+
+# Configure the logging
+logging.basicConfig(filename='lab.log', format='%(asctime)s - %(message)s', level=logging.INFO)
+
 
 def send_msg(s, msg):
     data = pickle.dumps(msg)
@@ -18,12 +23,15 @@ except socket.error as err:
 # case it is 12345 but it can be anything
 port = 12345			
 
+logging.info(f'server starting on port {port}')
+
 # Next bind to the port
 # we have not typed any ip in the ip field
 # instead we have inputted an empty string
 # this makes the server listen to requests
 # coming from other computers on the network
-s.bind(('', port))		
+host = socket.gethostname()
+s.bind((host, port))		
 print ("socket binded to %s" %(port))
 
 # put the socket into listening mode
@@ -45,28 +53,38 @@ while True:
     data = pickle.loads(recvd_data)
 
     if(data[0] == "LIST"):
+        logging.info(f'REQUEST {data[0]} received')
         list.clear()
         msg = "List is clean"
     elif(data[0] == "SEARCH"):
+        logging.info(f'REQUEST {data[0]} {data[1]} received')
         if(data[1] in list):
             msg = "Item {} exist".format(data[1])
         else:
             msg = "Item {} doesnt exist".format(data[1])
     elif(data[0] == "DELETE"):
+        logging.info(f'REQUEST {data[0]} {data[1]} received')
         if(data[1] in list):
             list.remove(data[1])
             msg = "Item {} is removed".format(data[1])
         else:
             msg = "Item {} does not exist".format(data[1])
     elif(data[0] == "ADD"):
+        logging.info(f'REQUEST {data[0]} {data[1]} received')   
         list.append(data[1])
         msg = "Item {} is added to the list".format(data[1])
     elif(data[0] == "QUIT"):
+        logging.info(f'REQUEST {data[0]} received')  
         msg = "Program terminated"
         send_msg(c, msg)
+        logging.info(f'RESPONSE {msg} sent')
         c.close     # Close the connection with the client
+
         break       # Breaking once connection closed
 
     send_msg(c, msg)    
-    
+    logging.info(f'RESPONSE {msg} sent')
+
     print("list: ", list)
+    
+print("Connection end")

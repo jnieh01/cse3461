@@ -22,13 +22,13 @@ except socket.error as err:
 port = 12345
 
 # connect to the server on local computer
-s.connect(('127.0.0.1', port))
+s.connect((socket.gethostname(), port))
 
 # Command count
 i = 0
 
-logging.basicConfig(format='%(asctime)s - %(message)s', datefmt='%d-%b-%y %H:%M:%S')
-
+# Configure the logging
+logging.basicConfig(filename='lab.log', format='%(asctime)s - %(message)s', level=logging.INFO)
 
 while True:
     print("\nAvailiable command:")
@@ -64,7 +64,7 @@ while True:
             break
         else:
             print("Invalid command: ", userinput[0])
-            print("Valid commands are: \nLIST \nSEARCH \nDELETE \nADD \nQUIT")
+            print("Valid commands are: \n\tLIST \n\tSEARCH \n\tDELETE \n\tADD \n\tQUIT")
     elif(len(userinput) == 2):
         if(userinput[0] == "LIST"):
             print("Too many inputs: LIST")
