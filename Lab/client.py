@@ -1,6 +1,7 @@
-# Import socket module
+# Import module
 import socket
 import pickle
+import logging
 
 def send_data(s, userinput):
     data = pickle.dumps(userinput)
@@ -25,6 +26,9 @@ s.connect(('127.0.0.1', port))
 
 # Command count
 i = 0
+
+logging.basicConfig(format='%(asctime)s - %(message)s', datefmt='%d-%b-%y %H:%M:%S')
+
 
 while True:
     print("\nAvailiable command:")
